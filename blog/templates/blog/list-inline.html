@@ -1,0 +1,76 @@
+
+ <div class='col-12 col-md-10 mb-3 mx-auto'>
+ <div class='card {% if not blog_post.publish_date %} border border-warning text-dark {% endif %}'>
+    <div class='card-body'>
+        {% if blog_post.image %}
+            <a href="{{ blog_post.get_absolute_url }}">
+                    <img src="{{ blog_post.image.url }}" class='card-img-top' />
+            </a>
+        {% endif %}
+		
+		
+		{% if not detail %}
+        <h5 class='card-title'> <a href="{{ blog_post.get_absolute_url }}">
+		{{ blog_post.title }}</a></h5>
+        <p class='card-text'>
+            <small class='text-muted'>{{ blog_post.publish_date }}</small>
+            {% if truncate %}
+                {{ blog_post.content|safe|truncatewords_html:100 }}
+            {% else %}
+                {{ blog_post.content|safe }}
+            {% endif %}
+        </p>
+		{% endif %}
+		
+		
+		{% if detail %}
+        <h5 class='card-title'> 
+		{{ blog_post.title }}</h5>
+        <p class='card-text'>
+            <small class='text-muted'>{{ blog_post.publish_date }}</small>
+            {% if truncate %}
+                {{ blog_post.content|safe|truncatewords_html:100 }}
+            {% else %}
+                {{ blog_post.content|safe}}
+            {% endif %}
+        </p>
+		
+		{% endif %}
+		
+        {% if not detail %}
+            {% if not blog_post.publish_date %} Draft {% endif %}
+            <a href="{{ blog_post.get_absolute_url }}">View</a>
+        
+        {% endif %}
+	
+    {% if detail %}
+		{% if tag %}
+		<h6>Posts tagged with "{{ tag.name }}"</h6>
+		{% endif %}
+		<p class="tags">
+		Tags:
+		{% for tag in blog_post.tags.all %}
+			<a href="{% url "blog:post_list_by_tag" tag.slug %}">
+			{{ tag.name }}</a>
+			{% if not forloop.last %}, {% endif %}
+		{% endfor %}
+		</p>
+		
+	<h7>Similar posts</h7>
+     {% for blog_post in similar_posts %}
+      <p>
+       <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
+      </p>
+     {% empty %}
+      There are no similar posts yet.
+     {% endfor %}
+	{% endif %}
+
+
+
+	
+  
+    </div>
+
+ </div>
+</div>

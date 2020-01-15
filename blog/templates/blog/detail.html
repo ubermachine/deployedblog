@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block meta %}
+    <meta name="description" content="{{object.meta_description}}"/>
+    <meta name="keywords" content="{{object.meta_keywords}}"/>
+{% endblock meta %}
+
+
+
+{% block content %}
+
+
+    <div class='row'>
+        <small class='text-muted'>{{ blog_post.publish_date }}</small>
+	<h2 class='card-title'> 
+		{{ blog_post.title }}</h2>
+        <p class='card-text'>
+     
+            {% if truncate %}
+                {{ blog_post.content|safe|linebreaks|truncatewords:100 }}
+            {% else %}
+                {{ blog_post.content|safe|linebreaks }}
+            {% endif %}
+        </p>
+     {% include 'blog/list-inline.html' with blog_post=object detail=True %}
+	<small class='text-muted'>{{ blog_post.publish_date }}</small>
+	 <h5 class='card-title'> 
+		{{ blog_post.title }}</h5>
+        <p class='card-text'>
+            
+            {% if truncate %}
+                {{ blog_post.content|safe|linebreaks|truncatewords:100 }}
+            {% else %}
+                {{ blog_post.content|safe|linebreaks }}
+            {% endif %}
+        </p>
+    {% if request.user.is_authenticated %}
+        {% if request.user.is_staff %}
+         <div class='col-12'>
+            <a href='{{ object.get_edit_url }}'>Edit</a>
+            <a href='{{ object.get_delete_url }}'>Delete</a>
+        </div>
+        {% endif %}
+    {% endif %}
+
+	
+    </div>
+{% endblock %}
